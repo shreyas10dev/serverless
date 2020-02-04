@@ -1,0 +1,34 @@
+{
+    "deviceId": "abcd1234",
+    "sensorId": "cam01",
+    "recordStartTime": "2020-01-26T10:00:00-8.00",
+    "inference": [
+        {
+            "fnName": "pixel_average",
+            "fnVersion": "0.01",
+            "results": [
+                {
+                    "targetBboxId": null,
+                    "r": 255,
+                    "g": 255,
+                    "b": 255
+                }
+            ]
+        }
+    ],
+    "deviceSettings": {
+        "deviceType": "pi0w",
+        "fwVersion": 0.01
+    },
+    "sensorSettings": {
+        "fwVersion": 0.01,
+        "resolution": "",
+        "aspectRatio": "",
+        "collectionTimePeriod": "on_trigger",
+        "trigger": "motion",
+        "preTriggerDuration": "15 seconds",
+        "postTriggerDuration": "15 seconds"
+    },
+    "mediaS3Path": "/cam01_2020-01-26T10:00:00.mp4",
+    "mediaDuration": "300 seconds"
+}
