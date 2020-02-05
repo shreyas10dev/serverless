@@ -1,0 +1,29 @@
+- deviceId: abcd1234
+  tennants:
+    - id: 1
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: 2020-01-26T10:00:00-8.00
+    - id: 2
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: null
+  sites:
+    - id: 1
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: 2020-01-26T10:00:00-8.00
+    - id: 2
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: null
+  assets:
+    - id: 1
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: 2020-01-26T10:00:00-8.00
+    - id: 2
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: null
+  groups:
+    - id: 1
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: 2020-01-26T10:00:00-8.00
+    - id: 2
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: null
