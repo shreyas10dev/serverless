@@ -1,13 +1,115 @@
-- fnName: video_pixel_average
-  fnVersion#cfgVersion: 0.01#0.01
-  thresholds:
-    r: 100
-    g: 100
-    b: 100
-- fnName: image_pixel_average
-  fnVersion#cfgVersion: 0.01#0.01
-  targetBboxCoordinates: [0, 0, 255, 255]
-  thresholds:
-    r: 100
-    g: 100
-    b: 100
+###########################################################################
+# dynamoDb table that will be used to contextualize an ingested raw event:
+#   1. which tenant/site/zone/asset/entity?
+#   2. which function/s to run (in the cloud) ?
+#   3. how to store the result of the fns?
+#   4. should any alerts be sent out in response?
+###########################################################################
+# There will ideally be a lambda triggering the process which will invoke a 
+# Step Functions Workflow, which will in turn invoke several lambdas.
+# As a bi-product: 
+#    - "contextualized" event/s might get written to AuroraDb.
+#    - alert/s might get sent out to subscribers via the configured API
+###########################################################################
+
+- deviceId: abcd1234
+  context:
+    tennants:
+      - id: ramesh
+        mappingStartTime: 2020-01-26T10:00:00-8.00
+        mappingEndTime: 2020-01-26T10:00:00-8.00
+      - id: shreyas
+        mappingStartTime: 2020-01-26T10:00:00-8.00
+        mappingEndTime: null
+    sites:
+      - id: shreyas.s1
+        mappingStartTime: 2020-01-26T10:00:00-8.00
+        mappingEndTime: null
+    zones:
+      - id: shreyas.s1.z1
+        mappingStartTime: 2020-01-26T10:00:00-8.00
+        mappingEndTime: null
+    assets:
+      - id: shreyas.s1.z1.a1
+        mappingStartTime: 2020-01-26T10:00:00-8.00
+        mappingEndTime: null
+    entities:
+      - id: shreyas.s1.z1.a1.e0
+        mappingStartTime: 2020-01-26T10:00:00-8.00
+        mappingEndTime: 2020-01-26T10:00:00-8.00
+      - id: shreyas.s1.z1.a1.e1
+        mappingStartTime: 2020-01-26T10:00:00-8.00
+        mappingEndTime: null
+    groups:
+      - id: shreyas.new_devices
+        mappingStartTime: 2020-01-26T10:00:00-8.00
+        mappingEndTime: null
+  functions:
+    - id: pawr.0.01
+      name: pixel_avg_within_range
+      version: 0.01
+      arn:
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: null
+      params:
+        - id: shreyas.1.1.1.f23.p1
+          mappingStartTime: 2020-01-26T10:00:00-8.00
+          mappingEndTime: null
+          bbox: ['x', 'y', 'w', 'h']
+          threholdsRange:
+            r: [120, 255]
+            g: [120, 255]
+            b: [0, 60]
+      resultFormatSpec:
+        - id: shreyas.1.1.1.23.r1
+          mappingStartTime: 2020-01-26T10:00:00-8.00
+          mappingEndTime: null
+          format:
+            within_range: open
+            outside_range: closed
+          endpoint:
+            resourceArn: auroraDb arn
+            tableName: business_event
+            writerArn: arn for lambda/query that writes to postgesql table
+  alerts:
+    - id: dota.0.01
+      name: door_open_text_alert
+      version: 0.01
+      arn:
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: null
+      params:
+        - id: shreyas.1.1.1.a1.p1
+          mappingStartTime: 2020-01-26T10:00:00-8.00
+          mappingEndTime: null
+          type: sms
+          mode: twilio
+          receipients: ["+14153266522"]
+      resultFormatSpec:
+        - id: shreyas.1.1.1.a1.r1
+          mappingStartTime: 2020-01-26T10:00:00-8.00
+          mappingEndTime: null
+          body: "<asset> @ <site> <zone> - <entity> <state> for <duration>. Please check on it!"
+    - id: dota.0.02
+      name: door_open_email_alert
+      version: 0.01
+      arn:
+      mappingStartTime: 2020-01-26T10:00:00-8.00
+      mappingEndTime: null
+      params:
+        - id: shreyas.1.1.1.a2.p1
+          mappingStartTime: 2020-01-26T10:00:00-8.00
+          mappingEndTime: null
+          type: email
+          mode: sns
+          attachMediaFile: true
+          receipients: ["shreyas.t@gmail.com"]
+      resultFormatSpec:
+        - id: shreyas.1.1.1.a2.r1
+          mappingStartTime: 2020-01-26T10:00:00-8.00
+          mappingEndTime: null
+          subject: "<asset> @ <site> <zone> - <entity> <state> for <duration>. Please check on it!"
+          body: 
+          attachMediaFile: true
+
+

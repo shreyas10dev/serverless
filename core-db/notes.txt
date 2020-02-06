@@ -1,0 +1,11 @@
+Everything to do with event extraction will be in dynamoDb - schema is not normalizable
+ - think from raw intervals -> giving them functional context (which lambda and how to store result)
+ - restating data - update either fn/params/resultFormatSpec and re-run ETL (glue)
+
+
+Everything to do with customer-site-asset-camera mappings will be in AuroraDb (sql) - entity-relationships can be made
+
+Always stream/upload intervals from edge (start/end times) not events. i.e. coalesce events before shipping them.
+Will save bandwidth and processing in the cloud. Also cannot think of a use-case where raw events might be important.
+In case of only snapshot -> start_time = end_time (for entities where capturing change is not important. simply wanna know their state at fixed intervals of time)
+

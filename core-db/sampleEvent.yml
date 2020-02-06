@@ -1,29 +1,60 @@
-deviceId: abcd1234
-sensorId: cam01
-recordStartTime: 2020-01-26T10:00:00-8.00
-eventType: data
-inference:
-    - fnName: pixel_average
-      fnVersion: 0.01
-      results:
-        - targetBboxId: 0
-          r: 255
-          g: 255
-          b: 255
-        - targetBboxId: 1
-          r: 0
-          g: 0
-          b: 0
-deviceSettings:
-    deviceType: pi0w
-    fwVersion: 0.01
-sensorSettings:
-    fwVersion: 0.01
-    resolution:
-    aspectRatio:
-    collectionTimePeriod: on_trigger
-    trigger: motion
-    preTriggerDuration: 15 seconds
-    postTriggerDuration: 15 seconds
-mediaS3Path: /cam01_2020-01-26T10:00:00.mp4
-mediaDuration: 300 seconds
+###########################################################################
+# exmaple of event from a device that was configured to perform local inference
+# the event is shipped with a inference result that can be used down-stream by 
+# subsequent fn's. Media file shipped can be used to re-infer or as a validation
+# of local result. 
+###########################################################################
+- deviceId: abcd1234
+  sensorId: cam01
+  recordStartTime: 2020-01-26T10:00:00-8.00
+  recordEndTime: 2020-01-26T10:05:00-8.00
+  eventType: inferred
+  inference:
+      - fnName: pawr.local.0.01 ## in this case the same fn ran on 2 bboxes
+        fnVersion: 0.01
+        results:  ## num rows written into table = len(results)
+          - targetBboxId: 0
+            r: 255
+            g: 255
+            b: 255
+          - targetBboxId: 1
+            r: 0
+            g: 0
+            b: 0
+  deviceSettings:
+      deviceType: pi0w
+      fwVersion: 0.01
+  sensorSettings:
+      fwVersion: 0.01
+      resolution:
+      aspectRatio:
+      collectionTimePeriod: on_trigger
+      trigger: motion
+      preTriggerDuration: 15 seconds
+      postTriggerDuration: 15 seconds
+  mediaS3Path: /cam01_2020-01-26T10:00:00.mp4
+  mediaDuration: 300 seconds
+
+###########################################################################
+# example of event from device configured to send only raw media (no local inference)
+# only result relevant here is the media file collected by the camera. subsequent fn's might
+# use this media and generate their own inference down stream
+###########################################################################
+- deviceId: abcd4567
+  sensorId: cam01
+  recordStartTime: 2020-01-26T10:15:00-8.00
+  recordEndTime: 2020-01-26T10:20:00-8.00
+  eventType: raw
+  deviceSettings:
+      deviceType: pi0w
+      fwVersion: 0.01
+  sensorSettings:
+      fwVersion: 0.01
+      resolution:
+      aspectRatio:
+      collectionTimePeriod: on_trigger
+      trigger: motion
+      preTriggerDuration: 15 seconds
+      postTriggerDuration: 15 seconds
+  mediaS3Path: /cam01_2020-01-26T10:00:00.mp4
+  mediaDuration: 300 seconds
